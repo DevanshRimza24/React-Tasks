@@ -1,45 +1,59 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Link, Routes, Route, Navigate, useNavigate } from "react-router-dom"
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
+import Home from "./Home"
+import About from "./About"
+
+function SomeComponent() {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/About"); // Programmatically navigate to About
+  };
+
+  return <button onClick={handleClick}>Go to About</button>;
+}
+
 
 function App() {
-  // const [count, setCount] = useState(0)
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [fullName, setFullName] = useState('');
-  
-  function handleFirstNameChange(e : any) {
-    setFirstName(e.target.value);
-    setFullName(e.target.value + ' ' + lastName);
-  }
+  // const navigate = useNavigate();
 
-  function handleLastNameChange(e : any) {
-    setLastName(e.target.value);
-    setFullName(firstName + ' ' + e.target.value);
-  }
+  // const handleButton = async () => {
+  //   navigate("/Home")
+  // };
+
+
   return (
     <>
-     
-     <h2>Let’s check you in</h2>
-      <label>
-        First name:{' '}
-        <input
-          value={firstName}
-          onChange={handleFirstNameChange}
-        />
-      </label>
-      <label>
-        Last name:{' '}
-        <input
-          value={lastName}
-          onChange={handleLastNameChange}
-        />
-      </label>
-      <p>
-        Your ticket will be issued to: <b>{fullName}</b>
-      </p>
 
+
+<BrowserRouter>
+      <div>
+         <div className='text-2xl font-bold'>test</div>
+          <nav >
+            <ul>
+              <li>
+                <Link to="/Home">Home</Link>
+              </li>
+              <li>
+                <Link to="/About">About</Link>
+              </li>
+            </ul>
+          </nav>
+
+          <Routes>
+            <Route path="/Home" element={<Home name="adssd"/>}></Route>
+            <Route path="/About" element={<About />}></Route>
+          </Routes>
+
+
+        <SomeComponent />
+
+        {/* <button onClick={handleButton}>Home</button> */}
+      </div>
+      </BrowserRouter>
 
 
       {/* <div>
