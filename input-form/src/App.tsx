@@ -3,8 +3,10 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import {Button, Checkbox} from 'antd'
 import { z } from "zod"
+// import "antd/dist/antd.css";
 // import { zodResolver } from "@hooksform/resolvers/zod"
 import './App.css'
+import RegistrationForm from './Registration'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -145,7 +147,7 @@ const validateInput = (name : string, value: string | boolean) => {
       case "bio":
         newErrors.bio = value.toString().trim().length > 200 ? "Bio must be under 200 characters" : "";
         break;
-        
+
       case "terms":
         newErrors.terms = value ? "" : "You must accept the terms";
         break;
@@ -256,6 +258,9 @@ const handleSubmit = (e : React.FormEvent) => {
 </div>
 
 
+   <div className="App">
+      <RegistrationForm />  {/* Add the RegistrationForm component here */}
+    </div>
 
     {/* <div className='text-2xl font-bold'>test</div> */}
     {/* <form>
