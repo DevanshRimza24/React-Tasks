@@ -70,10 +70,10 @@ if(!formData.interests.length) {
 } 
 
 if(!formData.bio.trim()) {
-  newErrors.name = "Bio is required"
+  newErrors.bio = "Bio is required"
 } 
 else if(formData.bio.length < 200) {
-  newErrors.name = "Bio must be under 200 characters"
+  newErrors.bio = "Bio must be under 200 characters"
 }
 
 if(formData.terms) newErrors.terms = "jdjfkj"
@@ -83,12 +83,76 @@ setErrors(newErrors)
 return Object.keys(newErrors).length === 0
 }
 
+const handleChangeValidate = (e : React.FormEvent) => {
+  e.preventDefault()
+  if(validateForm()) {
+    console.log("Form Data : ",)
+    
+  }
+}
+
 const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
   const {name, value, type} = e.target;
   // if(type==="checkbox") {
   //   // const updatedInterests = e.target.checked
   // }
+  
   setFormData({ ...formData, [name] : value })
+  validateInput(name, value)
+}
+
+const validateInput = (name : string, value: string | boolean) => {
+  
+  const newErrors = { ...errors}
+
+  switch(name) {
+      case "name" :
+      newErrors.name = value.toString().trim().length < 3 ? "Name must be atleast 3 characters" : ""
+      break
+
+      case "email" :
+      newErrors.email = !/^\S+@\S+\.\S+$/.test(value.toString())  ? "Invalid Email Address" : ""
+      break
+
+      case "age":
+        newErrors.age = Number(value) < 18 ? "You must be at least 18" : "";
+        break;
+
+      case "dob":
+
+        const dobDate = new Date(value.toString());
+        const today = new Date();
+        const age = today.getFullYear() - dobDate.getFullYear();
+        newErrors.dob = age < 18 ? "You must be at least 18 years old" : "";
+        break;
+
+      case "password":
+        newErrors.password = value.toString().length < 6 ? "Password must be at least 6 characters" : "";
+        break;
+
+      case "confirmPassword":
+        newErrors.confirmPassword = value !== formData.password ? "Passwords do not match" : "";
+        break;
+
+      case "gender":
+        newErrors.gender = value ? "" : "Please select a gender";
+        break;
+
+      case "country":
+        newErrors.country = value ? "" : "Please select a country";
+        break;
+
+      case "bio":
+        newErrors.bio = value.toString().trim().length > 200 ? "Bio must be under 200 characters" : "";
+        break;
+        
+      case "terms":
+        newErrors.terms = value ? "" : "You must accept the terms";
+        break;
+      
+  }
+
+  setErrors(newErrors)
 }
 
 const handleSubmit = (e : React.FormEvent) => {
