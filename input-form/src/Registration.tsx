@@ -1,45 +1,78 @@
-import React from "react";
-import { Form, Input, Button } from "antd";
+// import React from "react";
+// import { Form, Input, Button } from "antd";
+// import "antd/dist/antd.css";
+
+// const Formm: React.FC = () => {
+//   const [form] = Form.useForm();
+//   const onFinish = (values: any) => {
+//     console.log("Form Values:", values);
+//   };
 
 
-const Formm: React.FC = () => {
-  const [form] = Form.useForm();
-  const onFinish = (values: any) => {
-    console.log("Form Values:", values);
-  };
-  return (
-    <Form
-      form={form}
-      layout="inline"
-      onFinish={onFinish}
-      initialValues={{ firstName: "", email: "" }}
-    >
-      {/* First Name Field */}
-      <Form.Item
-        label="First Name"
-        name="firstName"
-        rules={[{ required: true, message: "Please enter your first name!" }]}
-      >
-        <Input placeholder="Enter first name" className=" w-1" />
-      </Form.Item>
-      {/* Email Field */}
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          { required: true, message: "Please enter your email!" },
-          { type: "email", message: "Please enter a valid email!" },
-        ]}
-      >
-        <Input placeholder="Enter email" />
-      </Form.Item>
-      {/* Submit Button */}
-      <Form.Item>
-        <Button type="primary" htmlType="submit" >
-          Submit
-        </Button >
-      </Form.Item>
-    </Form>
-  );
+//   return (
+    
+//     <Form>
+   
+//   )
+// }
+// export default Form
+
+
+import React from 'react';
+import type { FormProps } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
+type FieldType = {
+  username?: string;
+  password?: string;
+  remember?: string;
 };
-export default Formm;
+
+const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+
+  console.log('Success:', values);
+};
+
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+
+const App: React.FC = () => (
+  <Form
+    name="basic"
+    labelCol={{ span: 8 }}
+    wrapperCol={{ span: 16 }}
+    style={{ maxWidth: 600 }}
+    initialValues={{ remember: true }}
+    onFinish={onFinish}
+    onFinishFailed={onFinishFailed}
+    autoComplete="off"
+  >
+    <Form.Item<FieldType>
+      label="Username"
+      name="username"
+      rules={[{ required: true, message: 'Please input your username!' }]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item<FieldType>
+      label="Password"
+      name="password"
+      rules={[{ required: true, message: 'Please input your password!' }]}
+    >
+      <Input.Password />
+    </Form.Item>
+
+    <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
+      <Checkbox>Remember me</Checkbox>
+    </Form.Item>
+
+    <Form.Item label={null}>
+      <Button type="primary" htmlType="submit">
+        Submit
+      </Button>
+    </Form.Item>
+  </Form>
+);
+
+export default App;
