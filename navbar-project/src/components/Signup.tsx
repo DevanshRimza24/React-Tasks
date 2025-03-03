@@ -2,15 +2,15 @@ import { useState } from "react"
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      
+      const name = formData.name
       const email = formData.email;
       const password = formData.password;
-    const response = await axios.post("http://localhost:3001/api/login-user", { email, password }, { withCredentials: true });
+    const response = await axios.post("http://localhost:3001/api/signup-user-profile", { name, email, password }, { withCredentials: true });
     console.log(formData)
     console.log(response.data.status);
 
@@ -130,10 +130,10 @@ const Login = () => {
 
     return (
         <div className='bg-gray-100 rounded-lg shadow-md max-w-lg mx-auto p-6'>
-        <h2 className='text-2xl font-bold mb-4'>Login</h2>
+        <h2 className='text-2xl font-bold mb-4'>Signup</h2>
          <form onSubmit={handleSubmit}>
      
-           {/* <div className='flex flex-col mb-4 justify-between'>
+           <div className='flex flex-col mb-4 justify-between'>
             <div className="flex justify-between">
             <label className='block font-medium mr-10'>Name</label>
             <input type="text" name="name" value={formData.name} onChange={handleChange} className='input bg-gray-50'/>
@@ -142,7 +142,7 @@ const Login = () => {
              <div>
              {errors.name && <p className='error'>{errors.name}</p>}
              </div>
-           </div> */}
+           </div>
      
            <div className='flex flex-col mb-4 justify-between'>
             <div className="flex justify-between">
@@ -179,8 +179,8 @@ const Login = () => {
          <div className="mt-4">
         <p className="text-center">
           New User?{" "}
-          <Link to="/signup" className="text-blue-500 hover:text-blue-700">
-            Sign Up
+          <Link to="/login" className="text-blue-500 hover:text-blue-700">
+            Login
           </Link>
         </p>
       </div>
@@ -193,4 +193,4 @@ const Login = () => {
    
 }
 
-export default Login
+export default Signup
