@@ -2,8 +2,15 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { PropsWithChildren } from "react";
 
-const ProtectedRoutes = () => {
+
+type ProtectedRouteProps = PropsWithChildren
+
+
+
+
+const ProtectedRoutes = ( {children} : ProtectedRouteProps) => {
     // const navigate = useNavigate();
 
     // useEffect(() => {
@@ -40,7 +47,7 @@ const ProtectedRoutes = () => {
     const token = localStorage.getItem("accessToken");
     console.log(token);
 
-    return token ? <Outlet /> : <Navigate to="/login" />
+    return token ? children : <Navigate to="/login" />
 
 }
 
