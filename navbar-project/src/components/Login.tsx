@@ -1,8 +1,47 @@
 import { useState } from "react"
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
 
+  const handleLogin = async () => {
+    try {
+      
+      const email = formData.email;
+      const password = formData.password;
+    const response = await axios.post("http://localhost:3001/api/login-user", { email, password }, { withCredentials: true });
+    console.log(formData)
+    console.log(response.data.status);
+
+    if (response.data.status) {
+        console.log(response);
+
+        localStorage.setItem("accessToken", response.data.data.accessToken);
+        // console.log(response.data.data.accessToken);
+        navigate("/Home")
+      } else {
+        setError(response.data.message);
+      }
+    } catch (error : any) {
+      // const newErrors : Record<string, string> = {}
+      //  const err = JSON.parse(error)
+      console.log("jhghfgfg")
+      setError("Something went wrong");
+      console.log(error.response.data.status)
+      if(error.response.data.status==404) {
+          console.log("Email does not exists")
+          const newErrors : Record<string, string> = {}
+          newErrors.email="Email does not exists"
+          setErrors(newErrors)
+      }
+      else if(error.response.data.status==401) {
+        const newErrors : Record<string, string> = {}
+          newErrors.password="Invalid Password"
+          setErrors(newErrors)
+      }
+    }
+  };
 
     const [formData, setFormData] = useState({
         name : "",
@@ -10,12 +49,14 @@ const Login = () => {
         password : "",
       })
       
+      const [error, setError] = useState("");
+
       const [errors, setErrors] = useState<Record<string, string>>({})
       
       const validateForm = () => {
       
       const newErrors : Record<string, string> = {}
-      console.log(formData.name)
+      // console.log(formData.name)
       if(!formData.name.trim()) {
         newErrors.name = "Name is required"
       } 
@@ -129,17 +170,8 @@ const Login = () => {
                       
      
            </div>
-     
            
-     
-          
-     
-           
-     
-           
-     
-           
-            <button type="submit" className='btn'>Submit</button>
+            <button type="submit" onClick={handleLogin} className='btn'>Submit</button>
          </form>
          {/* <Button>Click me</Button> */}
      </div>
