@@ -5,6 +5,10 @@ import { createContext } from 'react'
 import React from 'react'
 import './App.css'
 import { useLocalStorage } from './useLocalStorage'
+import { RegistrationForm } from './RegistrationForm'
+import { UserProvider } from './UserContext'
+
+
 
 function App() {
 
@@ -45,10 +49,17 @@ function App() {
 
   return (
     <>
+     <UserProvider>
+        <div className='App'>
+          <RegistrationForm />
+        </div>
+
+     </UserProvider>
+     
 
 
 
-    
+
 
       {/* <input type="text" name='name' value={name} onChange={(e) => handleChange(e)} /> */}
 
