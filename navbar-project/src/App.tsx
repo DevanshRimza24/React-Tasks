@@ -15,47 +15,7 @@ import appRouter from "./utils/AuthRouter"
 
 
 
-// const appRouter = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: (
-//       <div className="App ">
-//         <Navbar />
-//         <Outlet/>
-//        </div>
-//     ),
-//     children: [
-//       {
-//         path: "/", 
-//         element: <Home />,
-//       },
-//       {
-//         path: "/Home", 
-//         element: <Home />,
-//       },
-//       {
-//         path: "/About", 
-//         element: <About />,
-//       },
-//       {
-//         path: "/Login", 
-//         element: <Login />,
-//       },
-//       {
-//         path: "/Signup", 
-//         element: <Signup />,
-//       },
-//       // {
-//       //   path: "/Dashboard", 
-//       //   element: (
-//       //     <ProtectedRoutes>
-//       //       <Dashboard />
-//       //     </ProtectedRoutes>
-//       //   ),
-//       // },
-//     ],
-//   },
-// ]);
+
 
 
 function App() {
