@@ -10,6 +10,7 @@ import Dashboard from "../components/Dashboard";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { TokenProvider } from './TokenContext';
 
 
 
@@ -61,7 +62,12 @@ const appRouter = createBrowserRouter([
         },
         {
           path: "/Login", 
-          element: <LoginRedirect />,
+          element: (
+            <TokenProvider>
+              <LoginRedirect />
+            </TokenProvider>
+          
+        ),
         },
         {
           path: "/Signup", 
@@ -71,7 +77,11 @@ const appRouter = createBrowserRouter([
           path: "/Dashboard", 
           element: (
             <ProtectedRoutes>
+              <TokenProvider>
+
               <Dashboard />
+              </TokenProvider>
+              
             </ProtectedRoutes>
           ),
         },

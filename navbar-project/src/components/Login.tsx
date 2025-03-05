@@ -1,8 +1,10 @@
 import { useState } from "react"
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useToken } from '../utils/TokenContext';
 
 const Login = () => {
+  const { setToken } = useToken(); 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -17,6 +19,8 @@ const Login = () => {
     if (response.data.status) {
         console.log(response);
 
+        const accessToken = response.data.data.accessToken;
+        setToken(accessToken);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         // console.log(response.data.data.accessToken);
         navigate("/Dashboard")
