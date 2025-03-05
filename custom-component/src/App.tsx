@@ -12,8 +12,8 @@ import Dashboard from './components/Dashboard'
 import Signup from './components/Signup'
 import AuthRouter from './utils/AuthRouter'
 import appRouter from "./utils/AuthRouter"
-
-
+import store from "./utils/store"
+import { Provider } from 'react-redux'
 
 
 
@@ -22,8 +22,12 @@ function App() {
 
   return (
     <>
-
+       <Provider store={store}>
        <RouterProvider router ={appRouter} />
+
+       </Provider>
+
+
       {/* <BrowserRouter>
         <div className="App bg-yellow-100">
           <Navbar />
