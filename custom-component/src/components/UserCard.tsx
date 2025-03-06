@@ -9,8 +9,8 @@ type UserProps = {
 
 
 export const UserCard = ({user} : UserProps) => {
-    const profileUrl = user.profileUrl
-    console.log(profileUrl)
+    // const profileUrl = user.profileUrl
+    // console.log(profileUrl)
     return(
         <div>
            <div className="border p-4 mb-4 shadow-md rounded-lg">

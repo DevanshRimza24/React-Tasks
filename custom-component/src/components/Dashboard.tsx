@@ -3,11 +3,21 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToken } from '../utils/TokenContext';
 import { UserCard } from "./UserCard";
+import {  useAppSelector } from "../redux/hooks";
+
+import { useDispatch } from "react-redux";
+import { display } from "../redux/slices/token";
+import { AppDispatch } from "../redux/store";
+
 const Dashboard = () => {
 
     const navigate = useNavigate();
     const { token } = useToken();
     // const [users, setUsers] = useState([]);
+
+    const tok = useAppSelector(state => state.token)
+
+  const dispatch = useDispatch<AppDispatch>()
 
     const [userProps, setUserProps] = useState<{
         id: number,
@@ -54,7 +64,7 @@ const Dashboard = () => {
 
                 // setUsers(response.data.data)
                 setUserProps(response.data.data)
-                console.log(userProps)
+                // console.log(userProps)
                 // console.log(response.data.data)
                 // setUser(response.data.data);
             } catch (err) {
@@ -72,6 +82,11 @@ const Dashboard = () => {
     return (
         <div className=" mt-7 text-xl">
 
+<h2>Token : {tok}</h2>
+      <button onClick={()=>{dispatch(display())}}>
+        
+        Dispaly Token
+      </button>
            
 
             {userProps ? (

@@ -13,16 +13,17 @@ const Login = () => {
       const email = formData.email;
       const password = formData.password;
     const response = await axios.post("http://localhost:3001/api/login-user", { email, password }, { withCredentials: true });
-    console.log(formData)
-    console.log(response.data.status);
+    // console.log(formData)
+    // console.log(response.data.status);
 
     if (response.data.status) {
-        console.log(response);
+        // console.log(response);
 
         const accessToken = response.data.data.accessToken;
         setToken(accessToken);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         // console.log(response.data.data.accessToken);
+        
         navigate("/Dashboard")
       } else {
         setError(response.data.message);

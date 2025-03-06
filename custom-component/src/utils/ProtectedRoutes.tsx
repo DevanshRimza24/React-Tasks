@@ -45,7 +45,7 @@ const ProtectedRoutes = ( {children} : ProtectedRouteProps) => {
 
     const user = true
     const token = localStorage.getItem("accessToken");
-    console.log(token);
+    // console.log(token);
 
     return token ? children : <Navigate to="/login" />
 
