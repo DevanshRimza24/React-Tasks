@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToken } from '../utils/TokenContext';
 import { UserCard } from "./UserCard";
-import {  useAppSelector } from "../redux/hooks";
+import {  useAppSelector, useAppDispatch } from "../redux/hooks";
 
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { display } from "../redux/slices/token";
 import { AppDispatch } from "../redux/store";
 
@@ -17,7 +17,8 @@ const Dashboard = () => {
 
     const tok = useAppSelector(state => state.token)
 
-  const dispatch = useDispatch<AppDispatch>()
+//   const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
 
     const [userProps, setUserProps] = useState<{
         id: number,
