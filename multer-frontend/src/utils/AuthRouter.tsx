@@ -6,7 +6,7 @@ import View from "../components/View";
 
 const appRouter = createBrowserRouter([
     {
-        path: "/",
+        path: "/multer",
         element: (
           <div className="App ">
             <Navbar />
@@ -15,19 +15,19 @@ const appRouter = createBrowserRouter([
         ),
         children: [
           {
-            path: "/", 
+            path: "/multer", 
             element: <Upload />,
           },
           {
-            path: "/Upload", 
+            path: "/multer/Upload", 
             element: <Upload />,
           },
           {
-            path: "/Gallery", 
+            path: "/multer/Gallery", 
             element: <Gallery />,
           },
           {
-            path: "/View", 
+            path: "/multer/View", 
             element: <View />,
           },
         ]

@@ -13,7 +13,7 @@ interface ImageCardProps {
 const ImageCard = ({ image }: ImageCardProps) => {
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate("/View", {
+        navigate("/multer/View", {
             state: { imageId: image.id, imageName: image.name, imageUrl: image.imageUrl }
           })
          

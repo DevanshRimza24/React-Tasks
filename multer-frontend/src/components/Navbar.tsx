@@ -6,8 +6,8 @@ const Navbar = () => {
 
         <nav className="nav">
             <div className='navbar'>
-                <Link to="/">Upload</Link>
-                <Link to="/gallery">Gallery</Link>
+                <Link to="/multer">Upload</Link>
+                <Link to="/multer/gallery">Gallery</Link>
 
             </div>
 
