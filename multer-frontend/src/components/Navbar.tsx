@@ -6,9 +6,9 @@ const Navbar = () => {
 
         <nav className="nav">
             <div className='navbar'>
-                <Link to="/multer">Upload</Link>
+                <Link to="/multer/upload">Upload</Link>
                 <Link to="/multer/gallery">Gallery</Link>
-
+                <Link to="/multer/login">Login</Link>
             </div>
 
         </nav>

@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar"
 import Upload from "../components/Upload";
 import Gallery from "../components/Gallery";
 import View from "../components/View";
+import Login from "../components/Login";
 
 const appRouter = createBrowserRouter([
     {
@@ -16,7 +17,11 @@ const appRouter = createBrowserRouter([
         children: [
           {
             path: "/multer", 
-            element: <Upload />,
+            element: <Login />,
+          },
+          {
+            path: "/multer/Login", 
+            element: <Login />,
           },
           {
             path: "/multer/Upload", 
@@ -30,6 +35,7 @@ const appRouter = createBrowserRouter([
             path: "/multer/View", 
             element: <View />,
           },
+          
         ]
     }
 ])
