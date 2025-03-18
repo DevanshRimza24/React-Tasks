@@ -1,0 +1,22 @@
+.parent {
+  width: 100%;
+}
+
+header {
+  position: fixed;
+  top: 0%;
+  background-color: aqua;
+  width: 100%;
+}
+
+.container {
+  background-color: bisque;
+  width: 100vw;
+  margin-top: 0%;
+}
+.container button {
+  width: 150px;
+}
+.container button:hover {
+  background-color: brown;
+}/*# sourceMappingURL=style.css.map */
