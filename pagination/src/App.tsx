@@ -242,8 +242,9 @@ function App() {
       enterButton="Search"
       size="large"
       onSearch={onSearch}
+      
     />
-        <Button onClick={clearAll}>Clear sorters</Button>
+        {/* <Button onClick={clearAll}>Clear sorters</Button> */}
       </Space>
       
       <Table<DataType> columns={columns} dataSource={data} 
