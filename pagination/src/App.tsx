@@ -51,39 +51,78 @@ function App() {
   const searchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const input = e.target.value;
     // console.log(input)
-    let typingTimeout
+    let typingTimeout : any
     // console.log(input)
     const skip = (page - 1) * pageSize
     setSearch(e.target.value)
     console.log(search)
 
-
+    // if (typingTimeout) {
+    //   clearTimeout(typingTimeout)
+    // }
     clearTimeout(typingTimeout)
 
     typingTimeout = setTimeout(() => {
       console.log("you are typing")
 
-      // http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${search}
-      // fetch(`http://localhost:8000/api/get-users-profile/?first_name=${e.target.value}&takee=${pageSize}`)
+      
+
+      // useEffect(() => {
 
 
+        const fetchUser = async () => {
+          try {
+            
+           
+    
+            if (field) {
+              const response = await axios.get(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${e.target.value}`, {
+                
+                withCredentials: true,
+    
+              });
+    
+              setData(response.data.data.results)
+              setCnt(response.data.data.count)
+            }
+            else {
+              const response = await axios.get(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=firstName&input=${e.target.value}`, {
+                
+                withCredentials: true,
+              });
+             
+              setData(response.data.data.results)
+              setCnt(response.data.data.count)
+            }
+    
+    
+            // setUser(response.data.data);
+          } catch (err) {
+    
+          }
+        }
+    
+        fetchUser();
+      // }, [e.target.value]);
+    
+    //   fetch(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${e.target.value}`)
 
-      fetch(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${e.target.value}`)
-
-        .then(data => data.json())
-        .then((data) => {
-          console.log(data.data.count)
-          setData(data.data.results)
-          setCnt(data.data.count)
-          // console.log("datacount---------" , data.count)
-        })
+    //     .then(data => data.json())
+    //     .then((data) => {
+    //       console.log(data.data.count)
+    //       setData(data.data.results)
+    //       setCnt(data.data.count)
+    //       // console.log("datacount---------" , data.count)
+    //     })
     }, 500)
-
+  
     // clearTimeout(typingTimeout)
 
+    
+   }
 
-  }
-
+  
+  
 
   interface DataType {
     key: string;
