@@ -1,34 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import axios from 'axios'
-import { useEffect } from 'react'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import axios from "axios";
+import { useEffect } from "react";
 import { Pagination } from "antd";
-import { Button, Flex } from 'antd';
-import { Space, Table, Tag } from 'antd';
-import type { TableProps, TableColumnsType, TablePaginationConfig, GetProp } from 'antd';
-import { SorterResult } from 'antd/es/table/interface'
-import { AudioOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
-import type { GetProps } from 'antd';
-
+import { Button, Flex } from "antd";
+import { Space, Table, Tag } from "antd";
+import type {
+  TableProps,
+  TableColumnsType,
+  TablePaginationConfig,
+  GetProp,
+} from "antd";
+import { SorterResult } from "antd/es/table/interface";
+import { AudioOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import type { GetProps } from "antd";
 
 function App() {
-  const [data, setData] = useState([])
-  const [sortedInfo, setSortedInfo] = useState<Sorts>({})
-  const [sortOrder, setSortOrder] = useState("asc")
-  const [field, setField] = useState("firstName")
-  const [page, setPage] = useState(1)
-  const [search, setSearch] = useState("")
-  const [cnt, setCnt] = useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const [data, setData] = useState([]);
+  const [sortedInfo, setSortedInfo] = useState<Sorts>({});
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [field, setField] = useState("firstName");
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
 
-  type OnChange = NonNullable<TableProps<DataType>['onChange']>;
+  const [debounceSearch, setDebounceSearch] = useState("");
+  const [cnt, setCnt] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
+  type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
   // type Filters = Parameters<OnChange>[1];
 
   type GetSingle<T> = T extends (infer U)[] ? U : never;
-  type Sorts = GetSingle<Parameters<OnChange>[2]>
+  type Sorts = GetSingle<Parameters<OnChange>[2]>;
 
   // type SearchProps = GetProps<typeof Input.Search>;
 
@@ -48,81 +54,64 @@ function App() {
   //   setSearch(value)
   // };
 
-  const searchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const input = e.target.value;
-    // console.log(input)
-    let typingTimeout : any
-    // console.log(input)
-    const skip = (page - 1) * pageSize
+  const searchChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+
+    // const skip = (page - 1) * pageSize;
+
     setSearch(e.target.value)
-    console.log(search)
+    console.log("🚀 ~ App ~ e.target.value:", e.target.value)
+    //  clearTimeout(typingTimeout)
 
-    // if (typingTimeout) {
-    //   clearTimeout(typingTimeout)
-    // }
-    clearTimeout(typingTimeout)
+  };
 
-    typingTimeout = setTimeout(() => {
-      console.log("you are typing")
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      console.log("🚀 ~ setTimeout ~ search:", search)
+      setDebounceSearch(search)
 
-      
-
-      // useEffect(() => {
-
-
-        const fetchUser = async () => {
-          try {
-            
-           
-    
-            if (field) {
-              const response = await axios.get(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${e.target.value}`, {
-                
-                withCredentials: true,
-    
-              });
-    
-              setData(response.data.data.results)
-              setCnt(response.data.data.count)
-            }
-            else {
-              const response = await axios.get(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=firstName&input=${e.target.value}`, {
-                
-                withCredentials: true,
-              });
-             
-              setData(response.data.data.results)
-              setCnt(response.data.data.count)
-            }
-    
-    
-            // setUser(response.data.data);
-          } catch (err) {
-    
+    }, 2000);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search])
+  const fetchUser = async () => {
+    console.log("cvdbdf")
+    try {
+      if (field) {
+        const response = await axios.get(
+          `http://localhost:8000/api/get-users-profile/${10}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${debounceSearch}`,
+          {
+            withCredentials: true,
           }
-        }
-    
-        fetchUser();
-      // }, [e.target.value]);
-    
-    //   fetch(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${e.target.value}`)
+        );
 
-    //     .then(data => data.json())
-    //     .then((data) => {
-    //       console.log(data.data.count)
-    //       setData(data.data.results)
-    //       setCnt(data.data.count)
-    //       // console.log("datacount---------" , data.count)
-    //     })
-    }, 500)
-  
-    // clearTimeout(typingTimeout)
+        setData(response.data.data.results);
+        setCnt(response.data.data.count);
+      } else {
+        const response = await axios.get(
+          `http://localhost:8000/api/get-users-profile/${10}?pageSize=${pageSize}&title=firstName&input=${debounceSearch}`,
+          {
+            withCredentials: true,
+          }
+        );
 
-    
-   }
+        setData(response.data.data.results);
+        setCnt(response.data.data.count);
+      }
 
-  
-  
+      // setUser(response.data.data);
+    } catch (err) { }
+  };
+
+  useEffect(() => {
+    console.log("first")
+    fetchUser();
+
+  }, [debounceSearch, pageSize, cnt, sortOrder, field])
 
   interface DataType {
     key: string;
@@ -132,153 +121,149 @@ function App() {
     email: string;
     gender: string;
     language: string;
-
   }
 
-
-
-  const columns: TableProps<DataType>['columns'] = [
+  const columns: TableProps<DataType>["columns"] = [
     {
-      title: 'Stock Symbol',
-      dataIndex: 'stockSymbol',
-      key: 'stockSymbol',
+      title: "Stock Symbol",
+      dataIndex: "stockSymbol",
+      key: "stockSymbol",
       // render: (text) => <a>{text}</a>,
       sorter: () => 0,
-      sortOrder: sortedInfo.columnKey === 'stockSymbol' ? sortedInfo.order : null,
-      ellipsis: true
+      sortOrder:
+        sortedInfo.columnKey === "stockSymbol" ? sortedInfo.order : null,
+      ellipsis: true,
     },
     {
-      title: 'First Name',
-      dataIndex: 'firstName',
-      key: 'firstName',
+      title: "First Name",
+      dataIndex: "firstName",
+      key: "firstName",
       sorter: () => 0,
-      sortOrder: sortedInfo.columnKey === 'firstName' ? sortedInfo.order : null,
-      ellipsis: true
+      sortOrder: sortedInfo.columnKey === "firstName" ? sortedInfo.order : null,
+      ellipsis: true,
     },
     {
-      title: 'Last Name',
-      dataIndex: 'lastName',
-      key: 'lastName',
+      title: "Last Name",
+      dataIndex: "lastName",
+      key: "lastName",
       sorter: () => 0,
-      sortOrder: sortedInfo.columnKey === 'lastName' ? sortedInfo.order : null,
-      ellipsis: true
+      sortOrder: sortedInfo.columnKey === "lastName" ? sortedInfo.order : null,
+      ellipsis: true,
     },
     {
-      title: 'Email',
-      key: 'email',
-      dataIndex: 'email',
+      title: "Email",
+      key: "email",
+      dataIndex: "email",
       sorter: () => 0,
-      sortOrder: sortedInfo.columnKey === 'email' ? sortedInfo.order : null,
-      ellipsis: true
+      sortOrder: sortedInfo.columnKey === "email" ? sortedInfo.order : null,
+      ellipsis: true,
     },
     {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
       sorter: () => 0,
-      sortOrder: sortedInfo.columnKey === 'gender' ? sortedInfo.order : null,
-      ellipsis: true
+      sortOrder: sortedInfo.columnKey === "gender" ? sortedInfo.order : null,
+      ellipsis: true,
     },
     {
-      title: 'Language',
-      dataIndex: 'language',
-      key: 'language',
+      title: "Language",
+      dataIndex: "language",
+      key: "language",
       sorter: (a, b) => a.language.length - b.language.length,
-      sortOrder: sortedInfo.columnKey === 'language' ? sortedInfo.order : null,
-      ellipsis: true
+      sortOrder: sortedInfo.columnKey === "language" ? sortedInfo.order : null,
+      ellipsis: true,
     },
-
-
   ];
 
   interface TableParams {
     pagination?: TablePaginationConfig;
-    sortField?: SorterResult<any>['field'];
-    sortOrder?: SorterResult<any>['order'];
-    filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
+    sortField?: SorterResult<any>["field"];
+    sortOrder?: SorterResult<any>["order"];
+    filters?: Parameters<GetProp<TableProps, "onChange">>[1];
   }
 
   const handleChange: OnChange = (pagination: any, filters, sorter: any) => {
-    console.log('Various parameters', pagination, sorter);
+    console.log("Various parameters", pagination, sorter);
     // setFilteredInfo(filters);
-    const data = sorter
-    const page = pagination
+    const data = sorter;
+    const page = pagination;
 
     // console.log(data?.field, data?.order.substring(0,3) )
-    console.log(page.pageSize)
-
+    console.log(page.pageSize);
 
     if (data?.order == "ascend") {
-      setSortOrder("asc")
-    }
-
-    else if (data?.order == "descend") {
-      setSortOrder("desc")
+      setSortOrder("asc");
+    } else if (data?.order == "descend") {
+      setSortOrder("desc");
     }
 
     // setSortOrder(data?.order)
-    setField(data?.field)
-    setPage(page?.current)
-    setPageSize(page.pageSize)
+    setField(data?.field);
+    setPage(page?.current);
+    setPageSize(page.pageSize);
     setSortedInfo(sorter as Sorts);
-  }
-
+  };
 
   const clearAll = () => {
     // setFilteredInfo({});
     setSortedInfo({});
   };
 
-
-
-
-
-
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const skip = (page - 1) * pageSize
+        const skip = (page - 1) * pageSize;
         //  const sort = sortOrder.substring(0,4)
         //  console.log(sort)
-        console.log(skip)
+        console.log(skip);
+
+        //  setTimeout(()=> {
+        //   const searchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        //     const input = e.target.value;
+        //     // console.log(input)
+        //     let typingTimeout: any
+        //     // console.log(input)
+        //     const skip = (page - 1) * pageSize
+        //     setSearch(e.target.value)
+        //     console.log(e.target.value)
+        //     searchChange
+        //     }}, 1500)
 
         if (field) {
-          const response = await axios.get(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${search}`, {
-            // headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true,
+          const response = await axios.get(
+            `http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${search}`,
+            {
+              // headers: { Authorization: `Bearer ${token}` },
+              withCredentials: true,
+            }
+          );
 
-          });
-
-          console.log(response.data.data.count)
-          setData(response.data.data.results)
-          setCnt(response.data.data.count)
+          console.log(response.data.data.count);
+          setData(response.data.data.results);
+          setCnt(response.data.data.count);
+        } else {
+          const response = await axios.get(
+            `http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=firstName&input=${search}`,
+            {
+              // headers: { Authorization: `Bearer ${token}` },
+              withCredentials: true,
+            }
+          );
+          console.log("hello...");
+          setData(response.data.data.results);
+          setCnt(response.data.data.count);
         }
-        else {
-          const response = await axios.get(`http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=firstName&input=${search}`, {
-            // headers: { Authorization: `Bearer ${token}` },
-            withCredentials: true,
-          });
-          console.log("hello...")
-          setData(response.data.data.results)
-          setCnt(response.data.data.count)
-        }
-
 
         // setUser(response.data.data);
-      } catch (err) {
-
-      }
+      } catch (err) { }
     };
 
     fetchUser();
   }, [page, pageSize, field, sortOrder]);
 
-
-
-
   return (
     <>
-
       <div>
         <h1>Pagination</h1>
 
@@ -296,8 +281,12 @@ function App() {
         {/* <label className='block font-medium mr-10'>Input</label> */}
         <input type="input" name="input" onChange={searchChange} />
 
-        <Table<DataType> columns={columns} dataSource={data}
-          onChange={handleChange} pagination={{ defaultCurrent: 1, total: cnt }} />
+        <Table<DataType>
+          columns={columns}
+          dataSource={data}
+          onChange={handleChange}
+          pagination={{ defaultCurrent: 1, total: cnt }}
+        />
         {/* <Pagination defaultCurrent={1} total={50} /> */}
 
         {/* .filter((item) => {
@@ -305,10 +294,9 @@ function App() {
         ? item 
         : item.firstName.toLowerCase().includes(search)
       }) */}
-
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
