@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import axios from "axios";
 import { useEffect } from "react";
@@ -17,6 +15,7 @@ import { SorterResult } from "antd/es/table/interface";
 import { AudioOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import type { GetProps } from "antd";
+import { getData } from "./utils/functions";
 
 function App() {
   const [data, setData] = useState([]);
@@ -40,14 +39,7 @@ function App() {
 
   // const { Search } = Input;
 
-  // const suffix = (
-  //   <AudioOutlined
-  //     style={{
-  //       fontSize: 16,
-  //       color: '#1677ff',
-  //     }}
-  //   />
-  // );
+  
 
   // const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
   //   console.log(info?.source, value, _e)
@@ -78,30 +70,35 @@ function App() {
       clearTimeout(handler);
     };
   }, [search])
-  const fetchUser = async () => {
+
+  const fetchUsers = async () => {
     console.log("cvdbdf")
     try {
-      if (field) {
-        const response = await axios.get(
-          `http://localhost:8000/api/get-users-profile/${10}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${debounceSearch}`,
-          {
-            withCredentials: true,
-          }
-        );
+
+      // if (field) {
+       
+        const response = await getData(page,pageSize,field,sortOrder,debounceSearch)
+        // console.log(response.data)
+        // const response = await axios.get(
+        //   `http://localhost:8000/api/get-users-profile?page=${page}&pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${debounceSearch}`,
+        //   {
+        //     withCredentials: true,
+        //   }
+        // );
 
         setData(response.data.data.results);
         setCnt(response.data.data.count);
-      } else {
-        const response = await axios.get(
-          `http://localhost:8000/api/get-users-profile/${10}?pageSize=${pageSize}&title=firstName&input=${debounceSearch}`,
-          {
-            withCredentials: true,
-          }
-        );
+      // } else {
+      //   const response = await axios.get(
+      //     `http://localhost:8000/api/get-users-profile/${page}?pageSize=${pageSize}&title=firstName&input=${debounceSearch}`,
+      //     {
+      //       withCredentials: true,
+      //     }
+      //   );
 
-        setData(response.data.data.results);
-        setCnt(response.data.data.count);
-      }
+      //   setData(response.data.data.results);
+      //   setCnt(response.data.data.count);
+      // }
 
       // setUser(response.data.data);
     } catch (err) { }
@@ -109,7 +106,7 @@ function App() {
 
   useEffect(() => {
     console.log("first")
-    fetchUser();
+    fetchUsers();
 
   }, [debounceSearch, pageSize, sortOrder, field])
 
@@ -205,58 +202,54 @@ function App() {
     setSortedInfo(sorter as Sorts);
   };
 
-  const clearAll = () => {
-    // setFilteredInfo({});
-    setSortedInfo({});
-  };
+  // const clearAll = () => {
+
+  //   setSortedInfo({});
+  // };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const skip = (page - 1) * pageSize;
-        //  const sort = sortOrder.substring(0,4)
-        //  console.log(sort)
-        console.log(skip);
+        // const skip = (page - 1) * pageSize;
+        
+        // console.log(skip);
 
-        //  setTimeout(()=> {
-        //   const searchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        //     const input = e.target.value;
-        //     // console.log(input)
-        //     let typingTimeout: any
-        //     // console.log(input)
-        //     const skip = (page - 1) * pageSize
-        //     setSearch(e.target.value)
-        //     console.log(e.target.value)
-        //     searchChange
-        //     }}, 1500)
+        
 
-        if (field) {
-          const response = await axios.get(
-            `http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${search}`,
-            {
-              // headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
-            }
-          );
+        // if (field) {
+
+          
+          const response = await getData(page,pageSize,field,sortOrder,search)
+
+
+          // const response = await axios.get(
+          //   `http://localhost:8000/api/get-users-profile?page=${page}&pageSize=${pageSize}&title=${field}&sortIn=${sortOrder}&input=${search}`,
+          //   {
+          //     // headers: { Authorization: `Bearer ${token}` },
+          //     withCredentials: true,
+          //   }
+          // );
 
           console.log(response.data.data.count);
           setData(response.data.data.results);
           setCnt(response.data.data.count);
-        } else {
-          const response = await axios.get(
-            `http://localhost:8000/api/get-users-profile/${skip}?pageSize=${pageSize}&title=firstName&input=${search}`,
-            {
-              // headers: { Authorization: `Bearer ${token}` },
-              withCredentials: true,
-            }
-          );
-          console.log("hello...");
-          setData(response.data.data.results);
-          setCnt(response.data.data.count);
-        }
+        // } else {
+        //   const response = await axios.get(
+        //     `http://localhost:8000/api/get-users-profile/${page}?pageSize=${pageSize}&title=firstName&input=${search}`,
+        //     {
+        //       // headers: { Authorization: `Bearer ${token}` },
+        //       withCredentials: true,
+        //     }
+        //   );
+        //   console.log("hello...");
+        //   setData(response.data.data.results);
+        //   setCnt(response.data.data.count);
+        // }
 
         // setUser(response.data.data);
-      } catch (err) { }
+      } catch (err) { 
+
+      }
     };
 
     fetchUser();
@@ -267,19 +260,10 @@ function App() {
       <div>
         <h1>Pagination</h1>
 
-        {/* <Space style={{ marginBottom: 16 }}>
-      <Search
-      placeholder="input search text"
-      allowClear
-      enterButton="Search"
-      size="large"
-      onSearch={onSearch}
-    />
-        <Button onClick={clearAll}>Clear sorters</Button>
-      </Space> */}
+       
 
         {/* <label className='block font-medium mr-10'>Input</label> */}
-        <input type="input" name="input" onChange={searchChange} />
+        <input type="input" className="input" name="input" onChange={searchChange} />
 
         <Table<DataType>
           columns={columns}
@@ -287,13 +271,7 @@ function App() {
           onChange={handleChange}
           pagination={{ defaultCurrent: 1, total: cnt }}
         />
-        {/* <Pagination defaultCurrent={1} total={50} /> */}
-
-        {/* .filter((item) => {
-        return search.toLowerCase() === ''
-        ? item 
-        : item.firstName.toLowerCase().includes(search)
-      }) */}
+       
       </div>
     </>
   );
